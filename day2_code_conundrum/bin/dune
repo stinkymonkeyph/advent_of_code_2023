@@ -1,0 +1,4 @@
+(executable
+ (public_name day2_code_conundrum)
+ (name main)
+ (libraries day2_code_conundrum))
