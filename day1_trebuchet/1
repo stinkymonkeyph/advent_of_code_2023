@@ -1,0 +1,14 @@
+let read_puzzle filename =
+  try
+    let channel = open_in filename in
+    try
+      while true do
+        let line = input_line channel in
+        print_endline line
+      done
+    with End_of_file -> close_in channel
+  with Sys_error msg -> Printf.printf "Error: %s \n" msg
+
+let () =
+  read_puzzle
+    "/Users/nelminjayanoc/Documents/Development/Laboratory/Ocaml/AdventOfCode2023/day1_trebuchet/bin/puzzle_input.txt"
