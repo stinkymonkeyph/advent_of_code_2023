@@ -32,11 +32,8 @@ let parse_extract line =
   try
     let parsed_string = translate_table line number_table in
     let parsed_string =
-      String.map (fun c -> if is_digit c then c else '0') parsed_string
-    in
-    let parsed_string =
       String.fold_left
-        (fun acc c -> if c = '0' then acc else acc ^ String.make 1 c)
+        (fun acc c -> if is_digit c = false then acc else acc ^ String.make 1 c)
         "" parsed_string
     in
     let parsed_string =
