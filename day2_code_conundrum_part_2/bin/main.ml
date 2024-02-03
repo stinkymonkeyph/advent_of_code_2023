@@ -1,0 +1,55 @@
+let get_bucket_value color line =
+  let parsed_string =
+    String.split_on_char ' ' line |> List.filter (fun s -> s <> "")
+  in
+  let value =
+    match parsed_string with
+    | h :: s :: _ -> if s = color then int_of_string h else 0
+    | _ -> 0
+  in
+  value
+
+let lookup_max_value color line =
+  let parsed_string = List.map (fun a -> get_bucket_value color a) line in
+  let parsed_string = List.sort (Fun.flip compare) parsed_string in
+  let max_value = List.hd parsed_string in
+  max_value
+
+let process_line line =
+  let parsed_string = String.split_on_char ':' line in
+  let parsed_string = List.nth parsed_string 1 in
+  let parsed_string =
+    Str.split_delim
+      (Str.regexp (String.concat "\\|" [ ","; ";" ]))
+      parsed_string
+  in
+  let max_red_value = lookup_max_value "red" parsed_string in
+  let max_green_value = lookup_max_value "green" parsed_string in
+  let max_blue_value = lookup_max_value "blue" parsed_string in
+  max_red_value * max_green_value * max_blue_value
+
+let minimum_power_set filename : int =
+  try
+    let channel = open_in filename in
+    let total_min_power_set = ref 0 in
+    try
+      while true do
+        try
+          let line = input_line channel in
+          total_min_power_set := !total_min_power_set + process_line line
+        with End_of_file -> raise Exit
+      done;
+      !total_min_power_set
+    with Exit ->
+      close_in channel;
+      !total_min_power_set
+  with Sys_error msg ->
+    Printf.printf "Error: %s \n" msg;
+    0
+
+let () =
+  let total_min_power_set =
+    minimum_power_set
+      "/Users/nelminjayanoc/Documents/Development/Laboratory/advent_of_code_2023/day2_code_conundrum_part_2/bin/puzzle_input.txt"
+  in
+  Printf.printf "Sum possible game ids: %i \n" total_min_power_set
