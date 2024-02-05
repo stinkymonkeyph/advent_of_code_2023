@@ -1,0 +1,4 @@
+(executable
+ (public_name day3_gear_ratios)
+ (name main)
+ (libraries day3_gear_ratios str))
